@@ -12,4 +12,27 @@
 \subsubsection{}
 
 \subsection{Amdahl's Law}
+\subsubsection{}
+\begin{itemize}
+    \item new CPU 10 times faster
+    \item old CPU spent 40\% of execution time on calculations
+    \item remaining time was for IO
+\end{itemize}
+\begin{align}
+    S &:= 60\%\\
+    P &:= 40\%\\
+    N &:= 10\\\nonumber\\
+    Speedup &= \frac{1}{.6+\frac{.4}{10}} = 1.563
+\end{align}
+
+$\Rightarrow$ We would expect a 56\% performance improvement from the new CPU\@.
+
+\subsubsection{}
+
+\subsubsection{}
+\begin{align}
+    100 &= \frac{1}{(1-P)+\frac{P}{128}}\\
+    \Leftrightarrow P&= 0.9978\\
+    \Rightarrow S &\leq 0.22\%
+\end{align}
 \end{document}
