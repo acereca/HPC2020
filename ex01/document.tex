@@ -28,6 +28,22 @@
 $\Rightarrow$ We would expect a 56\% performance improvement from the new CPU\@.
 
 \subsubsection{}
+\begin{itemize}
+    \item 20\% of compute time is used for squaere roots
+    \item possibilities:
+        \begin{itemize}
+            \item improve floating point square root calculations by factor of 10
+            \item improve all fp operations by 1.6
+        \end{itemize}
+    \item 50\% of operation is spent on FP
+\end{itemize}
+\begin{align}
+    S_1 &= \frac{1}{(1-(0.5\cdot 0.2))+\frac{0.5\cdot0.2}{10}}\\
+        &= 1.099\\\nonumber\\
+    S_2 &= \frac{1}{(1-0.5)+\frac{0.5}{1.6}}\\
+        &= 1.231
+\end{align}
+$\Rightarrow$ By accelerating all FP operations by a facctor of 1.6 a speedup of 23\% can be observed and therefore is the optimal solution (in contrast to only 9.9\% when only speeding up FPSQRT).
 
 \subsubsection{}
 \begin{align}
