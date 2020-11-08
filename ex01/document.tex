@@ -10,7 +10,42 @@
 \subsection{Reading}
 \subsection{Moore's Law}
 \subsubsection{}
+Apply Moore's Law to currently fastest Supercomputer to extrapolate time until exa
+scale performance is achieved.
+\begin{enumerate}
+	\item Consider derived law stating that computing power doubles every 18 months:
+	\begin{equation}
+		P_{\textrm{compute}}(t) = N_0 2^{\frac{1}{18} t}
+	\end{equation}
+	where $ N_0 $ is the computing power at time 0 and $ t $ the time in months.
+	\item Set $ P_{\textrm{compute}} $ to \SI{1e18}{flop\per\second}.
+	\item Set $ N_0 $ to current max performance of \SI{415530e12}{flop\per\second}
+	(\emph{Supercomputer Fugaku})\footnote{https://top500.org/lists/top500/2020/06/}.
+\item Solving for $ t $ yields a time of $ \approx23 $ months (see figure~\ref{fig:Moore}).
+\end{enumerate}
+$ \Rightarrow $ extrapolating from current performance using a derived Moore's law
+Exa scale computing power will be achieved in approximately 23 months or almost two years.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{./plots/Moore}
+	\caption{Extrapolating time until exa flop from derived Moore's law}%
+	\label{fig:Moore}
+\end{figure}
+\subsection{}
+Determine time until exa scale from growth rate from TOP500 list
+\begin{enumerate}
+	\item Use data from 2007 and 2011
+	\item Linear fit (on log scale) yields that exa flop performance should
+		have been reached around 2018 (see figure~\ref{fig:GrowthRate})
+\end{enumerate}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{./plots/GrowthRate.pdf}
+	\caption{Extrapolating time until exa flop from TOP500 data using linear fit}%
+	\label{fig:GrowthRate}
+\end{figure}
 
+\newpage
 \subsection{Amdahl's Law}
 \subsubsection{}
 \begin{itemize}
