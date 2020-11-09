@@ -1,7 +1,4 @@
 all: document.pdf
 
-%.pdf:%.tex img/amdahl.png
+%.pdf:%.tex
 	latexrun $< -Wall
-
-img/amdahl.png: scripts/amdahl.py
-	python scripts/amdahl.py

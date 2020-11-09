@@ -97,9 +97,15 @@ $\Rightarrow$ We would expect a 56\% performance improvement from the new CPU\@.
 $\Rightarrow$ By accelerating all FP operations by a facctor of 1.6 a speedup of 23\% can be observed and therefore is the optimal solution (in contrast to only 9.9\% when only speeding up FPSQRT).
 
 \subsubsection{}
+\begin{itemize}
+    \item implementation split for 128 processors
+    \item wanted speedup is 100x
+\end{itemize}
 \begin{align}
     100 &= \frac{1}{(1-P)+\frac{P}{128}}\\
     \Leftrightarrow P&= 0.9978\\
     \Rightarrow S &\leq 0.22\%
 \end{align}
+
+$\Rightarrow$ To achieve a speedup of 100x or higher the serial fraction needs to be below 0.22\%
 \end{document}
