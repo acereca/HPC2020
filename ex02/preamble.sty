@@ -1,0 +1,47 @@
+\ProvidesPackage{Preamble}
+\usepackage[utf8]{inputenc}
+\usepackage[
+top=2cm,
+bottom=2cm,
+left=3cm,
+right=2cm,
+headheight=17pt, % as per the warning by fancyhdr
+includehead,includefoot,
+heightrounded, % to avoid spurious underfull messages
+]{geometry} 
+\geometry{a4paper}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[table]{xcolor}
+%\usepackage{diagbox}
+\usepackage{lipsum}
+\usepackage{pgfkeys}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{hyperref}
+
+% Assembler
+\lstdefinelanguage
+{assembler} % based on the "x86masm" dialect
+% with these extra keywords:
+{morekeywords={call, mov}} % etc.
+
+% Lecture Name, exercise number, group number/members
+\newcommand{\lecture}{Introduction to High-Performance Computing}
+\newcommand{\groupnumber}{Group HPC05}
+\newcommand{\groupmembersshort}{Barley, Mumme, Nisblé}
+\newcommand{\groupmemberslist}{Barley, Daniel\\Mumme, Bernd\\Nisblé, Patrick}
+
+\fancyhf{}
+\fancyhead[L]{\groupnumber}
+\fancyhead[R]{\textsc{\groupmembersshort}}
+\fancyfoot[C]{\lecture: \exercise}
+\fancyfoot[R] {\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\pagestyle{fancy}

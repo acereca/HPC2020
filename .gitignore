@@ -1,2 +1,5 @@
 paper/
 latex.out/
+
+obj/
+*.out
