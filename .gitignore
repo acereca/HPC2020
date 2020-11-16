@@ -3,3 +3,5 @@ latex.out/
 
 obj/
 *.out
+
+out/
