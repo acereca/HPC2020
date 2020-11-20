@@ -22,28 +22,29 @@ all: $(OBJ) doc
 %.out: $(SRC_DIR)/%.cpp
 	$(CC) $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS) $(LDLIBS) -o $@
 
-mpirun: $(EXE)
-	mpirun -np $$(nproc) --oversubscribe $(EXE).out -n 1000000
+mpirun: $(OBJ)
+	mpirun -np $$(nproc) --oversubscribe $(OBJ) -n 1000000
 
 clean:
 	$(RM) $(OBJ)
+	latexrun --clean-all
 
 ########
 # DOCUMENTATION
 
-doc: document.pdf
+doc: document.pdf preamble.sty
 
 %.pdf:%.tex
-	latexrun $< -Wall
+	latexrun $< -Wall --latex-args="-shell-escape -synctex=1"
 
 ########
 # EXPERIMENT
 
 sync:
-	rsync -urP ../ hpc:$$USER/ --exclude out --exclude eval --exclude ex01 
+	rsync -urP ../ hpc:$$USER/ --exclude out --exclude eval --exclude ex01 --exclude .git
 
 run/ring:
-	ssh hpc "cd $$USER/ex02; make ring.out; sbatch slurm.sh"
+	ssh hpc "cd $$USER/ex02; make clean ring.out; sbatch slurm_ring.sh"
 
 pull:
 	rsync -uPr hpc:$$USER/ex02/out ./

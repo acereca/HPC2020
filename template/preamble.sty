@@ -8,11 +8,12 @@ right=2cm,
 headheight=17pt, % as per the warning by fancyhdr
 includehead,includefoot,
 heightrounded, % to avoid spurious underfull messages
-]{geometry} 
+]{geometry}
 \geometry{a4paper}
 \usepackage[english]{babel}
 \usepackage{listings}
-\usepackage{fancyhdr}
+%\usepackage{fancyhdr}
+\usepackage[automark,headsepline,footsepline=.25pt]{scrlayer-scrpage}
 \usepackage{siunitx}
 \usepackage{float}
 \usepackage{graphicx}
@@ -37,11 +38,21 @@ heightrounded, % to avoid spurious underfull messages
 \newcommand{\groupmembersshort}{Barley, Mumme, Nisblé}
 \newcommand{\groupmemberslist}{Barley, Daniel\\Mumme, Bernd\\Nisblé, Patrick}
 
-\fancyhf{}
-\fancyhead[L]{\groupnumber}
-\fancyhead[R]{\textsc{\groupmembersshort}}
-\fancyfoot[C]{\lecture: \exercise}
-\fancyfoot[R] {\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
-\pagestyle{fancy}
+%\fancyhf{}
+%\fancyhead[L]{\groupnumber}
+%\fancyhead[R]{\textsc{\groupmembersshort}}
+%\fancyfoot[C]{\lecture: \exercise}
+%\fancyfoot[R] {\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+%\pagestyle{fancy}
+
+\DeclarePageStyleAlias{fancy}{scrheadings}
+
+%\addtokomafont{pageheadfoot}{\slshape}
+\addtokomafont{pagehead}{\tiny}
+\addtokomafont{pagefoot}{\small}
+\ohead{\groupmembersshort}
+\ihead{\groupnumber}
+\ofoot{\thepage}
+\cfoot{\lecture: \exercise}

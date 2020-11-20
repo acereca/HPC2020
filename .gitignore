@@ -1,5 +1,6 @@
 paper/
 latex.out/
+_minted-document/
 
 obj/
 *.out

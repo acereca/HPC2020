@@ -20,7 +20,7 @@ int main(int argc,  const char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank == 0) std::cout << "rank;nproc;nummsg;t_total/ms;t_msg/ns\n";
+    if (rank == 0) std::cout << "#rank;nproc;nummsg;t_total/ms;t_msg/ns\n";
 
     // Compute
     uint8_t data = 0;
