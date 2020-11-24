@@ -1,7 +1,10 @@
 import pandas as pd
 import glob
 import argparse as ap
+import numpy as np
+
 import matplotlib.pyplot as plt
+import matplotlib.backends.backend_pdf as mpp
 from matplotlib import rc as rc
 
 rc('text', usetex=True)
@@ -10,32 +13,42 @@ plt.style.use('bmh')
 # plt.figure(figsize=())
 
 p = ap.ArgumentParser()
-p.add_argument("slurm_job_id", metavar="J", type=int, nargs="?")
+p.add_argument("slurm_job_id1", metavar="J", type=int, nargs="?")
+p.add_argument("slurm_job_id2", metavar="J", type=int, nargs="?")
 args = p.parse_args()
 
-if args.slurm_job_id[0]
-
 df = pd.DataFrame()
-for f in glob.glob("out/" + str(args.slurm_job_id[0]) + "_*"):
+for f in glob.glob("../code/out/" + str(args.slurm_job_id1) + "_*"):
     df = df.append(pd.read_csv(f, sep=",", names=["t_msg/ns", "s_msg/kB", "nodes"], comment="#"))
 
-print(df)
+for f in glob.glob("../code/out/" + str(args.slurm_job_id2) + "_*"):
+    df = df.append(pd.read_csv(f, sep=",", names=["t_msg/ns", "s_msg/kB", "nodes"], comment="#"))
 
-plt.hist(df['t_msg/ns'], 100)
+df = df.drop(df[df['t_msg/ns'] > 1e7].index)
 
+with mpp.PdfPages('img/latency.pdf') as pdf:
 
-# for numm in df['nummsg'].unique():
-    # f = (df['nummsg'] == numm)
+    for title, group in df.groupby('nodes'):
+        sizes = group['s_msg/kB'].unique()
+        means = [group[group['s_msg/kB'] == s]['t_msg/ns'].mean()/1e3 for s in sizes]
+        stdds = [group[group['s_msg/kB'] == s]['t_msg/ns'].std()/1e3 for s in sizes]
+        plt.errorbar(
+            sizes,
+            means,
+            yerr=stdds,
+            fmt=".",
+            alpha=.8,
+            ms=5,
+            elinewidth=1,
+            label=title
+        )
+    plt.legend()
+    plt.xscale('log')
+    plt.yscale('log')
 
-    # plt.errorbar(
-        # df['nproc'].unique(),
-        # [df[f & (df['nproc'] == s)]['t_msg/ns'].mean()/1000 for s in df['nproc'].unique()],
-        # fmt=".",
-        # label="{} messages".format(numm),
-        # ms=3
-    # )
-plt.legend()
-plt.title("")
-plt.xlabel("")
-plt.ylabel("")
-plt.savefig("img/latency.pdf")
+    plt.title("Roundtrip Times for different Message Sizes")
+    plt.ylabel("Roundtrip time / ms")
+    plt.xlabel("Message Size / kB")
+
+    pdf.savefig()
+    plt.close()

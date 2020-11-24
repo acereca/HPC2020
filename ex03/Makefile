@@ -10,7 +10,7 @@ push:
 	rsync -urP ../ hpc:$$USER/ --exclude out --exclude eval --exclude ex01 --exclude .git
 
 pull:
-	rsync -uPr hpc:$$USER/${EX}/code/out ./
+	rsync -uPr hpc:$$USER/${EX}/code/out ./code/
 
 
 ########

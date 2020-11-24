@@ -5,4 +5,4 @@
 #SBATCH --array 0-10
 
 module load mpi
-mpirun -host creek01 -np 2 ./latency.out -n 100000 -s $((2 ** ${SLURM_ARRAY_TASK_ID})) -N 1
+mpirun -np 2 -npernode 2 ./latency.out -n 100000 -s $((2 ** ${SLURM_ARRAY_TASK_ID})) -N 1

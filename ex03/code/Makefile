@@ -10,7 +10,7 @@ SRC = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=%.out)
 
 CC = mpic++ --std=c++11 -fdiagnostics-color=always -O2
-CPPFLAGS += -Iinclude -I../libs/argparse
+CPPFLAGS += -Iinclude -I../../libs/argparse
 CFLAGS += -Wall -Wextra -Wpedantic
 LDFLAGS += -Llib
 LDLIBS += -lpthread
