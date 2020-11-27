@@ -10,12 +10,12 @@ from matplotlib import rc as rc
 
 rc('text', usetex=True)
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern Roman']})
-plt.style.use('bmh')
+plt.style.use('ggplot')
 # plt.figure(figsize=())
 
 p = ap.ArgumentParser()
-p.add_argument("slurm_job_id1", metavar="J", type=int, nargs="?")
-p.add_argument("slurm_job_id2", metavar="J", type=int, nargs="?")
+p.add_argument("slurm_job_id1", metavar="J", type=int, nargs="?", default=82322)
+p.add_argument("slurm_job_id2", metavar="J", type=int, nargs="?", default=82323)
 args = p.parse_args()
 
 df = pd.DataFrame()
