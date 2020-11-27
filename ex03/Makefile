@@ -6,6 +6,9 @@ EX = $$(basename $$(pwd))
 run/latency: push
 	ssh hpc "cd $$USER/${EX}/code; make clean latency.out; sbatch slurm/latency1.sh; sbatch slurm/latency2.sh"
 
+hpcrun/latency: push
+	ssh hpc "cd $$USER/${EX}/code; make clean latency.out; sbatch -p hpc slurm/latency1.sh; sbatch -p hpc slurm/latency2.sh"
+
 push:
 	rsync -urP ../ hpc:$$USER/ --exclude out --exclude eval --exclude ex01 --exclude .git
 

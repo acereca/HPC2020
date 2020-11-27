@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import argparse as ap
 import numpy as np
+import scipy.optimize as opt
 
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf as mpp
@@ -24,7 +25,9 @@ for f in glob.glob("../code/out/" + str(args.slurm_job_id1) + "_*"):
 for f in glob.glob("../code/out/" + str(args.slurm_job_id2) + "_*"):
     df = df.append(pd.read_csv(f, sep=",", names=["t_msg/ns", "s_msg/kB", "nodes"], comment="#"))
 
-df = df.drop(df[df['t_msg/ns'] > 1e7].index)
+print(df)
+# df = df.drop(df[df['t_msg/ns'] > 1e7].index)
+print(df)
 
 with mpp.PdfPages('img/latency.pdf') as pdf:
 
@@ -40,14 +43,32 @@ with mpp.PdfPages('img/latency.pdf') as pdf:
             alpha=.8,
             ms=5,
             elinewidth=1,
-            label=title
+            label=f"{title} Node{'s' if title == 2 else ''}"
+        )
+
+        popt, pcov = opt.curve_fit(
+            lambda x, m, c: x*m+c,
+            sizes,
+            means,
+            p0=[10, 0],
+            sigma=stdds,
+            absolute_sigma=True
+        )
+
+        plt.plot(
+            sorted(sizes),
+            popt[0]*np.array(sorted(sizes))+popt[1],
+            linewidth=1,
+            label=r"${:.1f} s_{{msg}} + {:.1f}$".format(*popt),
+            c=f"C{title-1}",
+            ls="dashed"
         )
     plt.legend()
     plt.xscale('log')
     plt.yscale('log')
 
     plt.title("Roundtrip Times for different Message Sizes")
-    plt.ylabel("Roundtrip time / ms")
+    plt.ylabel("Roundtrip Time / ms")
     plt.xlabel("Message Size / kB")
 
     pdf.savefig()
