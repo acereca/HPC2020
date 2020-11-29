@@ -14,8 +14,8 @@ plt.style.use("ggplot")
 # plt.figure(figsize=(8,6))
 
 p = ap.ArgumentParser()
-p.add_argument("slurm_job_id1", metavar="J", type=int, nargs="?", default=82834)
-p.add_argument("slurm_job_id2", metavar="J", type=int, nargs="?", default=82835)
+p.add_argument("slurm_job_id1", metavar="J", type=int, nargs="?", default=82841)
+p.add_argument("slurm_job_id2", metavar="J", type=int, nargs="?", default=82842)
 args = p.parse_args()
 
 df = pd.DataFrame()

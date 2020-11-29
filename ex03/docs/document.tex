@@ -14,7 +14,7 @@ The slurm scripts are stored inside \verb|code/slurm/|.
 \subsection{Measure Latency}
 The MPI ping-pong implementation in \verb|code/src/latency.cpp| is measuring the roundtrip latency for each ping pong exchange 100000 times.
 This results in the latencies observed in \autoref{fig:latency}.
-Visualized in blue are the times for two ranks running on the same node, while the communication between two ranks on two different nodes is visualized in red.
+Visualized in red are the times for two ranks running on the same node, while the communication between two ranks on two different nodes is visualized in blue.
 
 \begin{figure}[ht]
     \centering
@@ -25,8 +25,10 @@ Visualized in blue are the times for two ranks running on the same node, while t
 
 Both times the Latency roughly increases linearly with message size and for the communication between nodes a distinct offset and worse latency scaling can be observed
 
+The scaling behaves worde by two magnitudes when comparing between node-to-node and inter-node communication.
+
 \subsection{Measure Bandwidth}
-The MPI flood-test implentation in \verb|code/src/bandwidth.cpp| is measuring the bandwidth over an averarge of 1000 mags, repeating this measurement 100 times.
+The MPI flood-test implentation in \verb|code/src/bandwidth.cpp| is measuring the bandwidth over an averarge of 1000 messages, repeating this measurement 100 times.
 This results in the bandwidths observed in \autoref{fig:bandwidth}.
 
 \begin{figure}[ht]
@@ -35,5 +37,11 @@ This results in the bandwidths observed in \autoref{fig:bandwidth}.
     \caption{Bandwidth over 100000 flood-messages}%
     \label{fig:bandwidth}
 \end{figure}
+
+Here a distinct increate in bandwidth is visible when communicating betyween two nodes.
+Additionally the communication between two nodes seems to be capped at $\approx$\SI{111}{MB/s}, in which case the interconnect may be the reason (\SI{1}{Gb/s} minus additional overhead additional overhead).
+{\bfseries No distinct difference between blocking and non-blocking send} is observable when communication between nodes.
+
+For the communication within one node, a distinct difference between blocking and non-blocking send was observable, here the {\bfseries blocking send bandwidth was around \SI{30}{\%} higher }.
 \subsection{Matrix multiply --- sequential}
 \end{document}
