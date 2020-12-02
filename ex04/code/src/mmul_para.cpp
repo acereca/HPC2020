@@ -2,6 +2,8 @@
 #include <iostream>
 #include <argparse.hpp>
 
+#include <debug.hpp>
+
 void multiply_parallel(double const *A, double const *B, double *c, size_t mdim);
 void transpose(double *M, size_t mdim);
 void print_matrix(double const *M, size_t mdim);
@@ -19,6 +21,8 @@ int main(int argc, char const *argv[]) {
 
     MPI_Comm_size(MPI_COMM_WORLD, &processes);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    MPI_DBG::enable_debugging(rank);
 
     size_t blocksize = ((mdim*mdim+processes-1)/processes);
 
@@ -41,12 +45,12 @@ int main(int argc, char const *argv[]) {
 
     multiply_parallel(A, B, cinterm, mdim);
 
-    std::cout << "rank " << rank << ": ";
-    for (size_t i = 0; i < blocksize; i++)
-        std::cout << cinterm[i] << ", ";
-    std::cout << std::endl;
+    // std::cout << "rank " << rank << ": ";
+    // for (size_t i = 0; i < blocksize; i++)
+        // std::cout << cinterm[i] << ", ";
+    // std::cout << std::endl;
 
-    MPI_Gather(cinterm, blocksize, MPI_DOUBLE, C, blocksize, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    // MPI_Gather(cinterm, blocksize, MPI_DOUBLE, C, blocksize, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 
     if (rank == 0) {
@@ -54,6 +58,11 @@ int main(int argc, char const *argv[]) {
         print_matrix(B, mdim);
         print_matrix(C, mdim);
     }
+
+    free(A);
+    free(B);
+    free(C);
+    free(cinterm);
 
     MPI_Finalize();
     return 0;
@@ -73,7 +82,7 @@ void multiply_parallel(double const *A, double const *B, double *C, size_t mdim)
     size_t blocksize = ((mdim+processes-1)/processes);
     size_t offset_A = rank*blocksize;
 
-    for (size_t i = 0; i < (rank != processes - 1) ? blocksize : mdim % blocksize; i++) {
+    for (size_t i = 0; i < blocksize; i++) {
         for (size_t j = 0; j < mdim; j++) {
             for (size_t s = 0; s < mdim; s++) {
                 C[i*mdim+j] += A[(offset_A+i*mdim)+s] * B[(j*mdim)+s];
