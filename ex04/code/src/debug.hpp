@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 namespace MPI_DBG {
     inline void enable_debugging(int rank) {
