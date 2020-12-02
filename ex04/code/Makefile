@@ -20,7 +20,7 @@ LDLIBS += -lpthread
 
 all: $(OBJ) $(DBG) doc
 
-%.dbg: $(SRC_DIR)/%.cpp
+%.dbg: $(SRC_DIR)/%.cpp $(SRC_DIR)/debug.hpp
 	$(CC) $(CPPFLAGS) $(CFLAGS) -ggdb -Og -DDBG $< $(LDFLAGS) $(LDLIBS) -o $@
 
 %.out: $(SRC_DIR)/%.cpp

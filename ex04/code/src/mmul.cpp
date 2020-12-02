@@ -95,10 +95,10 @@ void mmul_optimized(double const *A, double const *B, double *C, size_t dim) {
 	 * C: output matrix (has to be initialized to zero)
 	 * dim: number of rows (or columns in this case) of the matrix
 	 */
+    #pragma omp parallel for collapse(3) shared(C)
 	for (size_t ii = 0; ii < dim; ii += BLOCK_SIZE) {
 		for (size_t jj = 0; jj < dim; jj += BLOCK_SIZE) {
 			for (size_t kk = 0; kk < dim; kk += BLOCK_SIZE) {
-#pragma omp parallel for collapse(3)
 				for (size_t i = ii; i < std::min(ii + BLOCK_SIZE, dim); ++i) {
 					for (size_t j = jj; j < std::min(jj + BLOCK_SIZE, dim); ++j) {
 						for (size_t k = kk; k < std::min(kk + BLOCK_SIZE, dim); ++k) {
