@@ -1,4 +1,4 @@
 -I
-../libs/argparse
+../../libs/argparse
 -lboost_mpi
 -std=c++11

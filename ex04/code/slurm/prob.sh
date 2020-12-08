@@ -4,10 +4,13 @@
 #SBATCH -o out/%A
 
 module load mpi
-for proc in 10 16
+for exp in {1..10}
 do
-    for size in {7..13}
+    for proc in 10 16
     do
-        mpirun -np ${proc} -npernode 4 ./mmul_para.out -n $((2 ** ${prob}))
+        for prob in {7..12}
+        do
+            mpirun -np ${proc} -npernode 4 ./mmul_para.out -n $((2 ** ${prob}))
+        done
     done
 done
