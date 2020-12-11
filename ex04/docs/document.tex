@@ -13,20 +13,40 @@ The slurm scripts are stored inside \verb|code/slurm/|.
 To debug: run the debug outputs (\verb|*.dbg|) and attach gdb to respective pids
 
 \subsection{Reading}
-\subsection{Matrix multiply --- parallel version using MPI}
-\subsection{Matrix multiply --- scaling process count}
+\subsection{Matrix multiply --- parallel version using MPI}\label{ssec:mmul_parallel}
+\subsection{Matrix multiply --- scaling process count}\label{ssec:mmul_proc}
+
+The program of \autoref{ssec:mmul_parallel} was tested on its scalability with an increasing number of processes.
+The times and speedups in \autoref{tab:proc} were observed for 2000x2000 matrices with 100 repetitions.
+
 \begin{table}[ht]
     \centering
     \input{data/scaling_proc}
+    \caption{Scaling by Processes in numbers}\label{tab:proc}
 \end{table}
-\begin{figure}[ht]
+
+For this Example a step is visible before 6 pocesses, most likeley because here only one node is used and we are reaching its maximum. Starting with 6 processes, this maximum is increased.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{img/scaling_proc.pdf}
     \caption{Scaling Process Count}%
     \label{fig:scaling_proc}
 \end{figure}
-\subsection{Matrix multiply --- scaling problem size}
 
-feqw
+\subsection{Matrix multiply --- scaling problem size}
+In addition to the process scaling in \autoref{ssec:mmul_proc}, the scaling by problem size was also observed. The observed numbers are shown in \autoref{tab:prob}, here each test was run for both 10 and 16 processes as well as repeated 10 times.
+
+\begin{table}[ht]
+    \centering
+    \input{data/scaling_prob}
+    \caption{Scaling by Problem Size in numbers}\label{tab:prob}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{img/scaling_prob.pdf}
+    \caption{Scaling Problem Size}%
+    \label{fig:scaling_prob}
+\end{figure}
 
 \end{document}

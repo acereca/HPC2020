@@ -36,10 +36,13 @@ print(df)
 with mpp.PdfPages("img/scaling_proc.pdf") as pdf:
 
     plt.errorbar(
-        df['nodes'],
-        df['GFLOPS64/s'],
+        df.groupby('nodes').groups.keys(),
+        df.groupby("nodes")['GFLOPS64/s'].mean(),
         # df['GFLOPS64/s'].mean(),
-        # yerr=df['GFLOPS64/s'].std(),
+        yerr=df.groupby("nodes")['GFLOPS64/s'].std(),
+        fmt="--",
+        linewidth=1,
+        marker="."
     )
 
 
@@ -47,7 +50,7 @@ with mpp.PdfPages("img/scaling_proc.pdf") as pdf:
     # plt.xscale("log")
     # plt.yscale("log")
 
-    plt.title("Process dependent scaling of MMUL w/ MPI")
+    plt.title("Process dependent scaling of 2k MMUL w/ MPI")
     plt.ylabel("GFLOPS64 / s")
     plt.xlabel("Processes")
 
@@ -55,4 +58,16 @@ with mpp.PdfPages("img/scaling_proc.pdf") as pdf:
     pdf.savefig()
     plt.close()
 
-vt.df_tolatex(df[['nodes', 'GFLOPS64/s']], "data/scaling_proc.tex", None)
+dfnodes = df.groupby('nodes')
+
+data = dfnodes.agg({"GFLOPS64/s": ['mean', 'std']}).round(3)
+data = pd.concat([data, (dfnodes.agg({'t/ns': ['mean', 'std']})/1e9).round(3)], axis=1)
+data[('Speedup', "")] = (dfnodes['t/ns'].mean().iloc[0]/dfnodes['t/ns'].mean()).round(3)
+data.to_latex(
+    "data/scaling_proc.tex",
+    escape=False,
+    # columns=[("Time/s", ""), ("Speedup", ""), ("GFLOPS64/s", "mean"), ("GFLOPS64/s", "std")],
+    # formatters=[(lambda t: t/1e9), (lambda f: round(f, 3)), None],
+    multicolumn=True,
+    encoding='utf-8')
+

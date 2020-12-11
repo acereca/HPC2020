@@ -3,6 +3,7 @@ import glob
 import argparse as ap
 import numpy as np
 import scipy.optimize as opt
+import VisTools.tex as vt
 
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf as mpp
@@ -35,11 +36,16 @@ with mpp.PdfPages("img/scaling_prob.pdf") as pdf:
 
     for name, group in df.groupby('nodes'):
         plt.errorbar(
-            group['dim'],
+            group.groupby('dim').groups.keys(),
             # group['GFLOPS64/s'],
-            group['GFLOPS64/s'].mean(),
-            # yerr=group['GFLOPS64/s'].std(),
-            # fmt=".",
+            group.groupby('dim')['GFLOPS64/s'].mean(),
+            yerr=group.groupby('dim')['GFLOPS64/s'].std(),
+            fmt="--",
+            marker=".",
+            linewidth=1,
+            elinewidth=.5,
+            capsize=2,
+            alpha=.8,
             label=name
         )
 
@@ -55,3 +61,12 @@ with mpp.PdfPages("img/scaling_prob.pdf") as pdf:
     plt.tight_layout()
     pdf.savefig()
     plt.close()
+
+data = df.groupby(['dim', 'nodes']).agg({"GFLOPS64/s": ['mean', 'std']}).round(3)
+data.to_latex(
+    "data/scaling_prob.tex",
+    escape=False,
+    # formatters=[formatterfunc]*len(table.columns),
+    # index=False,
+    encoding='utf-8')
+
