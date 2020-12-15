@@ -5,8 +5,8 @@
 #include <array>
 #include <vector>
 
-#include <argparse>
-#include <export>
+#include "../../libs/argparse/argparse.hpp"
+#include "../../libs/export/export.hpp"
 
 int main(int argc, const char **argv) {
     // get args
