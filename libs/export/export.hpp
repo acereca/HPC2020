@@ -11,8 +11,13 @@
 #include <array>
 
 namespace Export{
-    template <typename numerical_t, unsigned int col_n>
-    void to_csv(std::string fp, std::vector<std::array<numerical_t, col_n>> &pixelarray, std::array<std::string, col_n> columnnames = {}) {
+    template <typename numerical_t>
+    void to_csv(
+            std::string fp,
+            std::vector<std::vector<numerical_t>> &columndata,
+            std::vector<std::string> columnnames = {}) {
+
+        std::cout << "exporting to " << fp << "\n";
         std::ofstream fs;
         fs.open(fp);
         //header
@@ -22,14 +27,21 @@ namespace Export{
             fs << sep << column;
             sep = ", ";
         }
-        //pixels
-        for (auto row: pixelarray){
-            fs << "\n";
+        fs << "\n";
+
+        size_t rows = 0;
+        for (auto col: columndata){
+            rows = (col.size() > rows) ? col.size() : rows;
+        }
+
+        for (size_t r = 0; r < rows; r++){
             const char *sep = "";
-            for (auto column: row) {
-                fs << sep << column;
+            for (auto col: columndata){
+                //fs << "\n";
+                fs << sep << col[r];
                 sep = ", ";
             }
+            fs << "\n";
         }
         fs.close();
     }
