@@ -13,6 +13,35 @@ The slurm scripts are stored inside \verb|code/slurm/|.
 To debug: run the debug outputs (\verb|*.dbg|) and attach gdb to respective pids
 
 \subsection{Reading}
+
+The Paper \enquote{The Future of Microprocessors} by Shekhar Borkar and Andrew Chien
+describes the end of performance scaling via transistor-speed of microprocessors.
+Instead, according to the authors, massive changes in architecture are necessary to keep
+up with Moore's Law. The main reason for this is energy efficiency which will become the
+key metric in chip design.
+By simply adding as many compute cores at maximum frequency as the transistor-integration
+capacity allows for the power consumption of the microprocessor would quickly grow into
+the hundreds of Watts.
+Instead of more fully fletched compute cores the authors suggest that instead both
+cache size will grow further since caches require less energy compared to logic
+and that microprocessors will instead feature smaller fine grained compute cores
+capable of operating at different frequencies or accelerators for special workloads.
+
+Some of the predictions made in the paper held true.
+For example frequency adjustment for certain cores is common even in consumer grade CPUs
+(Intel Turbo Boost, AMD Turbo Core).
+On the other hand cache sizes did not grow as rapidly as predicted. Most off the shelf CPUs
+feature caches in the range of \SI{30}{\mega B} with some going as high as \SI{64}{\mega B}.
+Exceptions to this are exotic architectures like the \emph{IBM z15} that feature very large
+off-chip caches realised as eDRAMs (\SI{960}{\mega B} L4 cache).
+Also the incorporation of smaller compute cores and accelerators into the CPU is
+mostly only found in exotic architectures. x64 based systems seem to stick to
+external many core accelerators like \emph{GPUs} or the \emph{Xeon Phi}.
+Despite that the core premise of the paper held true as energy efficiency has become
+a very important metric not only in HPC but also in consumer grade computing
+especially mobile devices.
+We therefore accept the paper.
+
 \subsection{Matrix multiply --- parallel version using MPI}\label{ssec:mmul_parallel}
 \subsection{Matrix multiply --- scaling process count}\label{ssec:mmul_proc}
 
