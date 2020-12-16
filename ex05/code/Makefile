@@ -18,9 +18,9 @@ LDLIBS += -lpthread
 
 .PHONY: all clean
 
-all: $(OBJ) $(DBG) doc
+all: $(OBJ) $(DBG)
 
-%.dbg: $(SRC_DIR)/%.cpp $(SRC_DIR)/debug.hpp
+%.dbg: $(SRC_DIR)/%.cpp ../../libs/mpi_debug/debug.hpp
 	$(CC) $(CPPFLAGS) $(CFLAGS) -ggdb -Og -DDBG $< $(LDFLAGS) $(LDLIBS) -o $@
 
 %.out: $(SRC_DIR)/%.cpp
