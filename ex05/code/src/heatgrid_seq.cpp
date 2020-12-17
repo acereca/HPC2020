@@ -44,7 +44,7 @@ int main(int argc, const char **argv)
 	auto time_diff =
 	    std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start)
 		.count();
-	std::cout << size << iterations
+	std::cout << size << " "<< iterations << " "
 		  << time_diff / static_cast<double>(iterations) << std::endl;
 #ifndef VERBOSE
 	if (iterations % 2) {
