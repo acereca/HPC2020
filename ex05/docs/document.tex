@@ -14,6 +14,25 @@ The slurm scripts are stored inside \verb|code/slurm/|.
 To debug: run the debug outputs (\verb|*.dbg|) and attach gdb to respective pids
 
 \subsection{Reading}
+The paper \enquote{Score-P - A Joint Performance Measurement Run-Time Infrastructure
+for Periscope, Scalasca, TAU, and Vampir} gives an overview of the Score-P suite,
+a performance measurement toolkit for high performance computing.
+The authors highlight the redundancies that come with using multiple specialized
+tools instead of a joint infrastructure especially when it comes to data acquisition.
+The proposed Score-P frameworks aims to fix these redundancies and provide ease of installation.
+The frame works bundles many different performance measurement libraries and tools
+(OpenMP, MPI planed support for CUDA) and instrumentation to automatically link and use them.
+Also The performance in comparison to previous and constituent frameworks is compared.
+
+Avoiding code duplication by having a joint framework seems to be a very good idea
+as long as the framework is flexible enough to incorporate new specific features.
+We accept the premise of the paper that a unified data format and instrumentation
+would allow for less redundancy and better interplay. In our opinion a frame work like
+this should be as unopinionated as possible as not to be restrictive for further additions
+to the framework. As alway when introducing new standards there is a danger of creating yet
+another framework that has to be used in conjunction with others.
+However the project looks promising.
+
 \subsection{Heat Relaxation --- Sequential Implementation}\label{ssec:heat_seq}
 (see \verb|code/|)
 Visualization in \href{./img/heat.gif}{img/heat.gif}
