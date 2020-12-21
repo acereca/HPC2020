@@ -29,7 +29,7 @@ int main(int argc, const char **argv)
 	// clear output file and write header
 	std::ofstream fs;
 	fs.open("./out/grid.csv", std::ios_base::trunc | std::ios_base::out);
-	fs << "# iteration, x dimension, y dimension, grid data" << std::endl;
+	fs << "# iteration; x dimension; y dimension; grid data" << std::endl;
 	fs.close();
 
 	// stencil can't be inplace -> use two grids and swap between each
@@ -44,7 +44,7 @@ int main(int argc, const char **argv)
 	auto time_diff =
 	    std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start)
 		.count();
-	std::cout << size << " "<< iterations << " "
+	std::cout << size << ", "<< iterations << ", "
 		  << time_diff / static_cast<double>(iterations) << std::endl;
 #ifndef VERBOSE
 	if (iterations % 2) {

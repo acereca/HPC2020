@@ -1,6 +1,6 @@
 doc: document.pdf
 
-%.pdf:%.tex preamble.sty data/scaling_proc.tex data/scaling_prob.tex
+%.pdf:%.tex preamble.sty data/heat_tab.tex
 	latexrun $< -Wall --latex-args="-shell-escape -synctex=1"
 
 img/%.pdf: eval/%.py

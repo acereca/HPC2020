@@ -70,7 +70,7 @@ inline void Grid::to_csv(std::string filename, size_t iteration)
 	std::ofstream fs;
 	fs.open(filename, std::ios_base::app);
 	bool first = true;
-	fs << iteration << " " << dimx << " " << dimy << ", [";
+	fs << iteration << "; " << dimx << "; " << dimy << "; [";
 	for (size_t j = 0; j < dimy; ++j) {
 		for (size_t i = 0; i < dimx; ++i) {
 			if (!first) {

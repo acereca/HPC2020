@@ -12,7 +12,7 @@ DBG = $(SRC:$(SRC_DIR)/%.cpp=%.dbg)
 
 CC = mpic++ --std=c++11 -fdiagnostics-color=always -O2
 CPPFLAGS += -Iinclude -I../../libs/argparse -I../../libs/export
-CFLAGS += -Wall -Wextra -Wpedantic -fopenmp
+CFLAGS += -Wall -Wextra -Wpedantic -fopenmp -DVERBOSE
 LDFLAGS += -Llib
 LDLIBS += -lpthread
 
