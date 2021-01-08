@@ -14,6 +14,8 @@
 #include "../../libs/mpi_debug/debug.hpp"
 #include "Grid.hpp"
 
+void gather_and_print(size_t size, size_t processes, std::vector<Grid> &g,
+                      size_t iteration, MPI_Comm comm);
 void relaxation_step(Grid const &old, Grid &next);
 // void relaxation(Grid &g1, Grid &g2, size_t iterations);
 
@@ -60,48 +62,92 @@ int main(int argc, const char **argv) {
   }
 
   std::vector<int> coords = {coord[0] - 1, coord[0] + 1};
-  std::vector<int> neighbors(2, -1);
-  for (size_t i = 0; i < coords.size(); i++) {
-    if (coord[i] >= 0 && coord[i] < processes) {
-      int c[] = {coords[0]};
-      // MPI_Cart_rank(WORLD_1D, c, &neighbors[i]);
-      MPI_Cart_shift(WORLD_1D, 0, -1 + 2 * i, &rank, &neighbors[i]);
-    }
-  }
+  // std::vector<int> neighbors(2, MPI_PROC_NULL);
+  int north = MPI_PROC_NULL;
+  int south = MPI_PROC_NULL;
+  MPI_Cart_shift(WORLD_1D, 0, -1, &rank, &north);
+  MPI_Cart_shift(WORLD_1D, 0, 1, &rank, &south);
 
   auto start = std::chrono::high_resolution_clock::now();
   for (size_t step = 0; step < iterations; step++) {
-    std::cout << step << std::endl;
+    // std::cout << coord[0] << ":" << step << std::endl;
     size_t old = step % 2;
     size_t next = (step + 1) % 2;
     relaxation_step(g[old], g[next]);
 
     // Exchange
-    if (neighbors[0] != -1 || neighbors[0] != MPI_PROC_NULL) {
-      MPI_Send(&g[next](0, 1), size, MPI_DOUBLE, neighbors[0], 0, WORLD_1D);
-      MPI_Recv(&g[next](0, 0), size, MPI_DOUBLE, neighbors[0], 0, WORLD_1D,
-               NULL);
-    }
-
-    if (neighbors[1] != -1 || neighbors[1] != MPI_PROC_NULL) {
-      MPI_Send(&g[next](0, g[next].dimy - 2), size, MPI_DOUBLE, neighbors[1], 0,
-               WORLD_1D);
-
-      MPI_Recv(&g[next](0, g[next].dimy - 1), size, MPI_DOUBLE, neighbors[1], 0,
-               WORLD_1D, NULL);
-    }
+    std::cout << "hi from " << coord[0] << "(" << step << ")" << std::endl;
+    MPI_Barrier(WORLD_1D);
+    MPI_Sendrecv(&g[next](0, 1), size, MPI_DOUBLE, north, 0, &g[next](0, 0),
+                 size, MPI_DOUBLE, north, 0, WORLD_1D, NULL);
+    MPI_Sendrecv(&g[next](0, g[next].dimy - 2), size, MPI_DOUBLE, south, 0,
+                 &g[next](0, g[next].dimy - 1), size, MPI_DOUBLE, south, 0,
+                 WORLD_1D, NULL);
+    // MPI_Send(&g[next](0, 1), size, MPI_DOUBLE, north, 0, WORLD_1D);
+    // MPI_Send(&g[next](0, g[next].dimy - 2), size, MPI_DOUBLE, south, 0,
+    // WORLD_1D);
+    // MPI_Recv(&g[next](0, 0), size, MPI_DOUBLE, north, 0, WORLD_1D, NULL);
+    // MPI_Recv(&g[next](0, g[next].dimy - 1), size, MPI_DOUBLE, south, 0,
+    // WORLD_1D, NULL);
+    std::cout << "bye from " << coord[0] << "(" << step << ")" << std::endl;
+#ifdef VERBOSE
+    gather_and_print(size, processes, g, step, MPI_COMM_WORLD);
+    // g1.to_csv("./out/grid.csv", iterations);
+#endif
   }
   auto stop = std::chrono::high_resolution_clock::now();
-  std::ofstream fs;
-  fs.open("./out/grid.csv");
-  auto time_diff =
-      std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
-          .count();
-  fs << size << ";" << processes << ";" << iterations << ";" << time_diff;
 
-  fs.close();
+  if (coord[0] == 0) {
+    std::ofstream fs;
+    fs.open("./out/grid.csv", std::ios::out | std::ios::app);
+    auto time_diff =
+        std::chrono::duration_cast<std::chrono::microseconds>(stop - start)
+            .count();
+    fs << size << ";" << processes << ";" << iterations << ";" << time_diff
+       << "\n";
+
+    fs.close();
+  }
   // recvs both successfull
+
   MPI_Finalize();
+}
+
+void gather_and_print(size_t size, size_t processes, std::vector<Grid> &g,
+                      size_t iteration, MPI_Comm comm) {
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  Grid gall(size, 1 + ((size + processes - 1) / processes) * processes);
+  size_t low = gall.dimx / 4;
+  size_t high = 3 * gall.dimx / 4;
+  for (size_t i = low; i < high; ++i) {
+    gall(i, 0) = 127.;
+    gall(i, 0) = 127.;
+  }
+  MPI_Gather(&g[(iteration) % 2](0, 1),
+             g[iteration % 2].dimx * (g[iteration % 2].dimy - 2), MPI_DOUBLE,
+             &gall(0, 1), g[iteration % 2].dimx * (g[iteration % 2].dimy - 2),
+             MPI_DOUBLE, 0, comm);
+  if (rank == 0) {
+    gall.dimy = size; // to print only 'necessary' data
+    gall.to_csv("./out/gall.csv", iteration);
+  }
+}
+
+void relaxation(Grid &g1, Grid &g2, size_t iterations) {
+  for (size_t i = 0; i < iterations; ++i) {
+    if (i % 2) {
+      relaxation_step(g2, g1);
+#ifdef VERBOSE
+      g1.to_csv("./out/grid.csv", iterations);
+#endif
+    } else {
+      relaxation_step(g1, g2);
+#ifdef VERBOSE
+      g2.to_csv("./out/grid.csv", iterations);
+#endif
+    }
+  }
 }
 
 void relaxation_step(Grid const &old, Grid &next) {

@@ -1,0 +1,47 @@
+\documentclass[]{scrartcl}
+\usepackage{Preamble}
+
+\setcounter{section}{6}
+\newcommand{\exercise}{Exercise \thesection}
+\newcommand{\duedate}{2021-01-18, 23:59}
+
+\begin{document}
+\section*{\exercise}
+
+To compile: unzip our uploaded code, and run \verb|make| inside \verb|code/|.
+The slurm scripts are stored inside \verb|code/slurm/|.
+
+To debug: run the debug outputs (\verb|*.dbg|) and attach gdb to respective pids
+
+\subsection{Heat Relaxation II --- Parallel Implementation}\label{ssec:impl}
+\subsection{Heat Relaxation II --- Experiments}
+
+The implementation in \autoref{ssec:impl} resulted in the values below (\autoref{tabl:heat_t}, \autoref{tabl:heat_s}, and \autoref{tabl:heat_e}).
+We choose the by-slot-Mapping (default of mpirun) as to reduce the number of hops between nodes.
+This Mapping starts filling a node's possible slots with ranks until full and then continues with another node.
+This results in rank 3 and 4 and ranks 7 and 8 communication between nodes (for 9 or more ranks).
+
+\begin{table}[ht]
+  \caption{Time [$\mu$s] / iteration}\label{tabl:heat_t}
+  \input{data/heat_t}
+\end{table}
+
+\begin{table}[ht]
+  \caption{Speedup}\label{tabl:heat_s}
+  \input{data/heat_s}
+\end{table}
+
+\begin{table}[ht]
+  \caption{Efficiency}\label{tabl:heat_e}
+  \input{data/heat_e}
+\end{table}
+
+\begin{itemize}
+  \item A speedup is observed, that correlates to the number of jobs (i.e.\ for 10 jobs we reach a speedup o approx 10, for a sufficiently large problem size)
+  \item For problem sizes too small, performance drops, due to the communication overhead dominating
+  \item Additionally super linear speedups were observed, probably due to better cache utilization.
+\end{itemize}
+
+\subsection{Heat Relaxation II --- Tracing}
+
+\end{document}

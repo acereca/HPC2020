@@ -33,24 +33,26 @@ struct Grid {
 
 inline Grid::Grid(size_t dim) : dimx(dim), dimy(dim)
 {
-	_data.reserve(dimx * dimy);
-	std::fill_n(std::back_inserter(_data), dimx * dimy, 0);
-	size_t low = dimx / 4;
-	size_t high = 3 * dimx / 4;
-	for (size_t i = low; i < high; ++i) {
-		_data[i] = 127.;
-	}
+  _data.resize(dimx * dimy, 0);
+	// _data.reserve(dimx * dimy);
+	// std::fill_n(std::back_inserter(_data), dimx * dimy, 0);
+	// size_t low = dimx / 4;
+	// size_t high = 3 * dimx / 4;
+	// for (size_t i = low; i < high; ++i) {
+	// 	_data[i] = 127.;
+	// }
 }
 
 inline Grid::Grid(size_t dimx, size_t dimy) : dimx(dimx), dimy(dimy)
 {
-	_data.reserve(dimx * dimy);
-	std::fill_n(std::back_inserter(_data), dimx * dimy, 0);
-	size_t low = dimx / 4;
-	size_t high = 3 * dimx / 4;
-	for (size_t i = low; i < high; ++i) {
-		_data[i] = 127.;
-	}
+  _data.resize(dimx*dimy, 0);
+	// _data.reserve(dimx * dimy);
+	// std::fill_n(std::back_inserter(_data), dimx * dimy, 0);
+	// size_t low = dimx / 4;
+	// size_t high = 3 * dimx / 4;
+	// for (size_t i = low; i < high; ++i) {
+	// 	_data[i] = 127.;
+	// }
 }
 
 inline Grid::~Grid() {}
