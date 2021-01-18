@@ -43,5 +43,42 @@ This results in rank 3 and 4 and ranks 7 and 8 communication between nodes (for 
 \end{itemize}
 
 \subsection{Heat Relaxation II --- Tracing}
+\subsubsection{Expectations From Tracing}
+Since the stencil is a memory and computation heavy tasks we would expect most time being spend
+inside the stencil computation i.e.\ \texttt{relaxation\_step()} function in our case.
+Since only halo values are sent among tasks we don't expect communication to be as intensive.
+
+\subsubsection{Expectations From Experiments}
+The performed experiments meet our expectations.
+Smaller workloads get worse with rising number of tasks since communication overhead increases.
+For larger workloads we reach speedups approximately proportional to the number of tasks.
+
+\subsubsection{Tracing}
+Using \emph{scorep} to trace our application confirms our initial expectation:
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/scorep_128_100.png}
+	\caption{Tracing result for problem size of 128x128. Most time (around 50\%) is spent in MPI as expected. }%
+	\label{fig:./img/scorep_128_100}
+\end{figure}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/scorep_2048_10.png}
+	\caption{Using a larger problem size of 2048x2048 MPI time becomes almost negligible (around 4\%)}%
+	\label{fig:./img/scorep_2048_10}
+\end{figure}
+For large problems the number of iterations does not seem to change the result too much.
+
+Looking at user time we can also see that most of the time is spent accessing vector items:
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/scorep_funcs.png}
+	\caption{We can see that 25\% of time is spent \texttt{relaxation\_step()} doing actual computation. 42\% of the time is spent fetching elements from the grid}%
+	\label{fig:/img/scorep_funcs}
+
+\end{figure}
+\subsubsection{Insights from tracing}
+Using this information we could optimize memory access further (speed up index calculation).
 
 \end{document}
