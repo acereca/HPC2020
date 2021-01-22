@@ -1,0 +1,79 @@
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'comm_overlap.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%%
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{584.52754464bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.77945044)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{./img/comm_overlap.pdf}}%
+    \put(0.2177373,0.504001){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI\_Irecv[1] \& MPI\_Isend[0]\end{tabular}}}}%
+    \put(0.28829058,0.478329){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.00641543\unitlength}\raggedright \end{minipage}}}%
+    \put(0.51150052,0.59477072){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI\_Wait[0]\end{tabular}}}}%
+    \put(0.43633541,0.55287446){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}memcp[0]\end{tabular}}}}%
+    \put(0.42179671,0.43097274){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}iterate[0,t=0]\end{tabular}}}}%
+    \put(0.30161779,0.62294099){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[0]\end{tabular}}}}}%
+    \put(0.64233327,0.51238575){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[0]\end{tabular}}}}}%
+    \put(0.30161779,0.62294099){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[0]\end{tabular}}}}}%
+    \put(0.64233327,0.51238575){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[0]\end{tabular}}}}}%
+    \put(0.30161779,0.62294099){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[0]\end{tabular}}}}}%
+    \put(0.28047701,0.33569375){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[1]\end{tabular}}}}}%
+    \put(0.64256334,0.21093037){\color[rgb]{0,0,0}\rotatebox{-3.9342549}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}pckt[1]\end{tabular}}}}}%
+    \put(0.42179671,0.43097274){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}iterate[0,t=0]\end{tabular}}}}%
+    \put(0.4181968,0.10483869){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}iterate[1,t=0]\end{tabular}}}}%
+    \put(0.44183958,0.24867613){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}memcp[1]\end{tabular}}}}%
+    \put(0.50719013,0.29679994){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI\_Wait[1]\end{tabular}}}}%
+    \put(0.21649487,0.20133354){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI\_Irecv[2] \& MPI\_Isend[1]\end{tabular}}}}%
+    \put(0.06736985,0.66553204){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}rank n-1\end{tabular}}}}%
+    \put(0.73418823,0.66553204){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}rank n+1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{./img/comm_overlap.pdf}}%
+    \put(0.39698009,0.71222987){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.205294\unitlength}\centering rank n\end{minipage}}}%
+  \end{picture}%
+\endgroup%
