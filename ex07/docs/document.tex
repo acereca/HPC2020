@@ -11,6 +11,35 @@
 \section*{\exercise}
 
 \subsection{Reading}
+\subsubsection{LogP: Towards a Realistic Model of Parallel Computation}
+The paper addresses the lack of a general model for parallel machine models.
+According to the authors the models used are either to Simplistic, the authors
+use the PRAM model as an example, or overly specific so as to only apply to few
+select actual hardware devices.
+\\\\
+As an alternative LogP model is introduced which is supposed to act as general
+model for parallel machines. It uses four key parameters to characterize a
+parallel machine: the number of processors, communication bandwidth, 
+communication latency, and communication overhead.
+Since parallel machines employ vastly different strategies for problems LogP
+is high-level enough to incorporate factors of e.g.\ the interconnection network
+without using implementation details like topology or routing.
+Additionally to describing the LogP model the paper also addresses how to use
+the model to develop efficient parallel algorithms, primarily at the example of
+FFT and LU decomposition.
+\\\\
+As also mentioned in the paper the LogP model also serves as a more concrete
+version of the BSP model proposed by Valiant which neglects for example
+synchronization. This leads to algorithms being designed to optimal up to
+constant factors. As these may be large LogP is designed to also take these into
+account. These seem like reasonable observations and we therefore accept the
+paper.
+
+\subsubsection{Roofline: An Insightful Visual Performance Model for Multicore Architectures}
+To address the increasing variety in microprocessors, the Roofline model was introduced to offer cross-platform understandable performance guidelines using bound and bottleneck analysis. It ties together floating-point performance, operational intensity and memory performance in a 2D-graph. After explaining the function of the Roofline model, the paper demonstrates its utility on four diverse multicore computers, then optimizing four floating-point kernels taken from the Seven Dwarfs before clearing up some fallacies.\\\\
+The Roofline model sets an upper bound on performance depending on the kernel's operational intensity, thus showing if performance of the kernel is compute-bound or memory-bound and, by adding ceilings, which optimizations may be necessary.\\
+Finally, the ridge point is a better predictor for performance than clock rate or peak performance and indicates when a computer is imbalanced.\\\\
+The Roofline model is still used today to check for a kernel's peak performance, although one has to especially consider to choose the right metric. Therefore, we accept the given paper. 
 \subsection{n-Body Problem --- Partitioning/Communication Design}
 \subsubsection{Memory Layout}
 
