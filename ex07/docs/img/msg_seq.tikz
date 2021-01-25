@@ -1,0 +1,42 @@
+\begin{tikzpicture}
+	\begin{pgfonlayer}{nodelayer}
+		\node [style=rounded rect] (0) at (0, 0) {rank n};
+		\node [style=rounded rect] (2) at (-4, 0) {rank n-1};
+		\node [style=rounded rect] (3) at (4, 0) {rank n+1};
+		\node [style=none] (4) at (-4, -9) {};
+		\node [style=none] (5) at (0, -9) {};
+		\node [style=none] (6) at (4, -9) {};
+		\node [style=none] (7) at (-4, -1.5) {};
+		\node [style=none] (8) at (-2, -1.5) {};
+		\node [style=task] (9) at (0, -2) {\footnotesize memcp[0]};
+		\node [style=none, label={above:\scriptsize pkt[0]}] (10) at (-3, -1.75) {};
+		\node [style=none] (11) at (2, -2.5) {};
+		\node [style=none] (12) at (4, -2.5) {};
+		\node [style=none] (13) at (4, -2.5) {};
+		\node [style=none, label={above:\scriptsize pkt[0]}] (15) at (3, -2.75) {};
+		\node [style=task, minimum height=30pt] (16) at (0, -3.75) {\footnotesize iterate[0](t=0)};
+		\node [style=none] (17) at (-4, -5.5) {};
+		\node [style=none] (18) at (-2, -5.5) {};
+		\node [style=task] (19) at (0, -6) {\footnotesize memcp[1]};
+		\node [style=none, label={above:\scriptsize pkt[1]}] (20) at (-3, -5.75) {};
+		\node [style=none] (21) at (2, -6.5) {};
+		\node [style=none] (22) at (4, -6.5) {};
+		\node [style=none] (23) at (4, -6.5) {};
+		\node [style=none, label={above:\scriptsize pkt[1]}] (24) at (3, -6.75) {};
+		\node [style=task, minimum height=30pt] (25) at (0, -7.75) {\footnotesize iterate[1](t=0)};
+		\node [style=new style 0] (26) at (-1, -11) {\scriptsize task};
+		\node [style=none] (27) at (0, -11) {};
+		\node [style=none] (28) at (1.5, -11) {};
+		\node [style=none] (30) at (0.75, -10.75) {\scriptsize msg};
+	\end{pgfonlayer}
+	\begin{pgfonlayer}{edgelayer}
+		\draw [style=timeline] (2) to (4.center);
+		\draw [style=timeline] (5.center) to (0);
+		\draw [style=timeline] (3) to (6.center);
+		\draw [style=arrow] (7.center) to (8.center);
+		\draw [style=arrow] (11.center) to (13.center);
+		\draw [style=arrow] (17.center) to (18.center);
+		\draw [style=arrow] (21.center) to (23.center);
+		\draw [style=arrow] (27.center) to (28.center);
+	\end{pgfonlayer}
+\end{tikzpicture}
