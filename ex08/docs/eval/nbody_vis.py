@@ -91,7 +91,7 @@ im, = ax.plot(
         df[df['step'] == i]['pos.x'],
         df[df['step'] == i]['pos.y'],
         df[df['step'] == i]['pos.z'],
-        marker='o',
+        marker='.',
         linestyle='none'
         # ms=np.log(df[df['step'] == i]['mass [kg]']).tolist()
     )
@@ -105,7 +105,7 @@ def animate(i):
     im.set_3d_properties(df[df['step'] == i]['pos.z'])
     print(f"Progress: {round(100*i/df['step'].max())}% ({i}/{df['step'].max()})", end="\r")
 
-fps = df['step'].max()/20
+fps = df['step'].max()/20 #make vid 20 sec long
 anim = man.FuncAnimation(fig, animate, frames=df['step'].max(),
                                interval=1000/fps, blit=False)
 plt.tight_layout()
