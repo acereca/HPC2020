@@ -11,15 +11,15 @@
 #include "../../../libs/argparse/argparse.hpp"
 #include "../../../libs/mpi_debug/debug.hpp"
 
-constexpr int DELTA_T = 1;          // s
+int DELTA_T = 100;          // s
 constexpr double GAMMA = 6.673e-11; // N m^2 kg^-2
 constexpr double EPSILON = 1e-30;   // softening factor
 std::random_device
     rd; // Will be used to obtain a seed for the random number engine
 std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-std::uniform_real_distribution<> mass_distrib(1e-1, 1e10);
+std::uniform_real_distribution<> mass_distrib(.9e1, 1e1);
 std::uniform_real_distribution<>
-    space_distrib(-1e4, 1e4); // start within 25km of eachother
+    space_distrib(-1e3, 1e3); // start within 25km of eachother
 
 struct bbuffer {
   std::vector<double> data;
@@ -75,31 +75,34 @@ struct bodies {
     velY = &data[5 * n];
     velZ = &data[6 * n];
 
-    for (size_t i = 0; i < n; i++) {
+    for (size_t i = 0; i < (n - nulled); i++) {
       mass[i] = mass_distrib(gen);
-      posX[i] = space_distrib(gen);
-      posY[i] = space_distrib(gen);
-      posZ[i] = space_distrib(gen);
+      // posX[i] = space_distrib(gen);
+      // posY[i] = space_distrib(gen);
+      // posZ[i] = space_distrib(gen);
+      posX[i] = i*10;
+      posY[i] = i*10;
+      posZ[i] = i*10;
     }
 
-    for (size_t i = n - 1; i < (n - nulled - 1); i--) {
-      mass[i] = 0;
-      posX[i] = 0;
-      posY[i] = 0;
-      posZ[i] = 0;
-    }
   }
-  void print_to_file(std::string fd) {
-    std::fstream fs(fd, fs.out | fs.app);
+  void print_to_file(std::string fd, size_t step) {
+    std::fstream fs;
+    if (step == 0) {
+      fs = std::fstream(fd, fs.out | fs.trunc);
+    } else {
+      fs = std::fstream(fd, fs.out | fs.app);
+    }
     if (!fs.is_open())
       std::fprintf(stderr, "failed to open file %s\n", fd.c_str());
     else {
-      fs << "#mass [kg]; "
+      fs << "#step; "
+         << "mass [kg]; "
          << "pos.x; "
          << "pos.y; "
          << "pos.z;" << std::endl;
       for (size_t i = 0; i < n; ++i) {
-        fs << mass[i] << ", " << posX[i] << ", " << posY[i] << ", " << posZ[0]
+        fs << step << ", " << mass[i] << ", " << posX[i] << ", " << posY[i] << ", " << posZ[0]
            << "\n";
       }
     }
@@ -124,15 +127,15 @@ struct leap_frog_iterator {
     // b = b;
   };
 
-  void update(bodies &objs) {
-    for (size_t i = 0; i < objs.data.size(); i++) {
-      objs.posX[i] = objs.velX[i] * DELTA_T;
-      objs.posY[i] = objs.velY[i] * DELTA_T;
-      objs.posZ[i] = objs.velZ[i] * DELTA_T;
+  void update() {
+    for (size_t i = 0; i < n; i++) {
+      b.posX[i] += b.velX[i] * DELTA_T;
+      b.posY[i] += b.velY[i] * DELTA_T;
+      b.posZ[i] += b.velZ[i] * DELTA_T;
 
-      objs.velX[i] = acc[i][0] * DELTA_T;
-      objs.velY[i] = acc[i][1] * DELTA_T;
-      objs.velZ[i] = acc[i][2] * DELTA_T;
+      b.velX[i] += acc[i][0] * DELTA_T;
+      b.velY[i] += acc[i][1] * DELTA_T;
+      b.velZ[i] += acc[i][2] * DELTA_T;
     }
     acc.clear();
     acc.resize(n, {0, 0, 0});
@@ -141,9 +144,9 @@ struct leap_frog_iterator {
   void operator()(bbuffer &msg_objs) {
     for (size_t i = 0; i < n; i++) {
       for (size_t j = 0; j < n; j++) {
-        double dist_x = b.posX[i] - msg_objs.posX[j];
-        double dist_y = b.posY[i] - msg_objs.posY[j];
-        double dist_z = b.posZ[i] - msg_objs.posZ[j];
+        double dist_x = - (b.posX[i] - msg_objs.posX[j]);
+        double dist_y = - (b.posY[i] - msg_objs.posY[j]);
+        double dist_z = - (b.posZ[i] - msg_objs.posZ[j]);
         double dist_sq = dist_x * dist_x + dist_y * dist_y + dist_z * dist_z + EPSILON;
         acc[i][0] +=
             -GAMMA * (msg_objs.mass[j]) / dist_sq * dist_x / std::sqrt(dist_sq);
@@ -161,10 +164,12 @@ int main(int argc, char const *argv[]) {
   argparse::ArgumentParser ap;
   ap.addArgument("-n", "--num-objects", 1, false);
   ap.addArgument("-i", "--iterations", 1, false);
+  ap.addArgument("-t", "--tstep", 1, false);
   ap.parse(argc, argv);
 
   size_t size = ap.retrieve<size_t>("num-objects");
   size_t iterations = ap.retrieve<size_t>("iterations");
+  DELTA_T = ap.retrieve<size_t>("tstep");
 
   int processes = 1;
   int rank = 0;
@@ -193,7 +198,9 @@ int main(int argc, char const *argv[]) {
   std::array<bbuffer, 2> bbuffs{bodies_per_rank, bodies_per_rank};
 
   if (coord[0] == (processes - 1)) {
-    objects = bodies(bodies_per_rank, bodies_per_rank - (size % processes));
+    objects = bodies(bodies_per_rank, (bodies_per_rank - (size % processes)) % bodies_per_rank);
+
+    // iii iii iii i00
   }
 
   leap_frog_iterator lfi(processes, bodies_per_rank, objects);
@@ -226,11 +233,11 @@ int main(int argc, char const *argv[]) {
                 prev, 0, WORLD_1D, &sig_recv);
       // compute
       lfi(bbuffs[loop_step % 2]);
-      // update();
+      lfi.update();
     }
 
 #ifdef VERBOSE
-    bodies.print_to_file("bodies_r" + std::to_string(coord[0]));
+    objects.print_to_file("./out/bodies_r" + std::to_string(coord[0]), time_step);
 #endif
     MPI_Wait(&sig_recv, NULL);
     MPI_Wait(&sig_send, NULL);
@@ -245,7 +252,7 @@ int main(int argc, char const *argv[]) {
           .count();
 
   if (coord[0] == 0) {
-    std::cout << size << ", " << processes << ", " << t_diff / iterations << "\n";
+    std::cout << size << ", " << processes << ", " << t_diff << ", " << iterations << "\n";
   }
 
   MPI::Finalize();
