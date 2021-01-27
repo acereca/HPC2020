@@ -176,7 +176,7 @@ int main(int argc, char const *argv[]) {
 
   MPI_Comm WORLD_1D;
   const int dims[] = {processes};
-  const int periods[] = {false};
+  const int periods[] = {true};
 
   MPI_Cart_create(MPI_COMM_WORLD, 1, dims, periods, false, &WORLD_1D);
 
@@ -207,7 +207,7 @@ int main(int argc, char const *argv[]) {
 
   MPI_Request sig_recv, sig_send;
 
-  MPI_Irecv(&bbuffs[0], bodies_per_rank * 4, MPI_DOUBLE, prev, 0, WORLD_1D,
+  MPI_Irecv(&bbuffs[0].data[0], bodies_per_rank * 4, MPI_DOUBLE, prev, 0, WORLD_1D,
             &sig_recv);
   MPI_Isend(&objects.data[0], bodies_per_rank * 4, MPI_DOUBLE, next, 0,
             WORLD_1D, &sig_send);
@@ -219,10 +219,10 @@ int main(int argc, char const *argv[]) {
       MPI_Wait(&sig_recv, NULL);
       // MPI_isend 0->
       MPI_Wait(&sig_send, NULL);
-      MPI_Isend(&bbuffs[loop_step % 2], bodies_per_rank * 4, MPI_DOUBLE, next,
+      MPI_Isend(&bbuffs[loop_step % 2].data[0], bodies_per_rank * 4, MPI_DOUBLE, next,
                 0, WORLD_1D, &sig_send);
       // MPI-irecv -> 1
-      MPI_Irecv(&bbuffs[(loop_step + 1) % 2], bodies_per_rank * 4, MPI_DOUBLE,
+      MPI_Irecv(&bbuffs[(loop_step + 1) % 2].data[0], bodies_per_rank * 4, MPI_DOUBLE,
                 prev, 0, WORLD_1D, &sig_recv);
       // compute
       lfi(bbuffs[loop_step % 2]);
@@ -234,7 +234,7 @@ int main(int argc, char const *argv[]) {
 #endif
     MPI_Wait(&sig_recv, NULL);
     MPI_Wait(&sig_send, NULL);
-    MPI_Irecv(&bbuffs[0], bodies_per_rank * 4, MPI_DOUBLE, prev, 0, WORLD_1D,
+    MPI_Irecv(&bbuffs[0].data[0], bodies_per_rank * 4, MPI_DOUBLE, prev, 0, WORLD_1D,
               &sig_recv);
     MPI_Isend(&objects.data[0], bodies_per_rank * 4, MPI_DOUBLE, next, 0,
               WORLD_1D, &sig_send);
