@@ -8,3 +8,6 @@ img/%.pdf: eval/%.py
 
 data/%.tex: eval/%.py
 	python $<
+
+vis:
+	python eval/nbody_vis.py && mpv --fs img/nbody_vis.mp4
